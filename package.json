@@ -1,0 +1,10 @@
+{
+  "name": "thunder-bot",
+  "version": "1.0.0",
+  "description": "kosen 13s' slackbot",
+  "main": "index.js",
+  "repository": "https://github.com/kosen13s/thunder-bot.git",
+  "author": "kosen 13s'",
+  "license": "MIT",
+  "private": true
+}
