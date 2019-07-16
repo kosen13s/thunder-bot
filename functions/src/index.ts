@@ -22,6 +22,7 @@ const app = new App({
   token: config.slack.bot.token
 })
 
+app.error(console.log)
 app.message('hello', ({ message, say }) => {
   say(`Hello <@${message.user}>!`)
 })
