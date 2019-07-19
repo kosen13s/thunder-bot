@@ -1,12 +1,12 @@
-import * as functions from 'firebase-functions';
+import * as functions from 'firebase-functions'
 import { App, ExpressReceiver } from '@slack/bolt'
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //
 export const helloWorld = functions.https.onRequest((_, response) => {
-  response.send("Hello from Firebase!");
-});
+  response.send('Hello from Firebase!')
+})
 
 // ref: https://github.com/seratch/bolt-on-cloud-functions-for-firebase
 
