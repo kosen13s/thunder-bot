@@ -14,12 +14,12 @@ const config = functions.config()
 
 const expressReceiver = new ExpressReceiver({
   signingSecret: config.slack.secret,
-  endpoints: '/events'
+  endpoints: '/events',
 })
 
 const app = new App({
   receiver: expressReceiver,
-  token: config.slack.bot.token
+  token: config.slack.bot.token,
 })
 
 app.error(console.log)
