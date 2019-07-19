@@ -15,6 +15,6 @@ jobs:
           working_directory: functions
           name: build functions
           command: yarn build
-      - run;
+      - run:
           name: lint
           command: yarn lint
