@@ -23,19 +23,9 @@ const app = new App({
 })
 
 app.error(console.log)
-app.message(/\b\d+D\d+\b/i, ({ message, say }) => {
-  if (message.text === undefined) {
-    console.log('nDm failed: お前はどんなメッセージに反応してんねん', message)
-    return
-  }
-
-  const result = message.text.match(/\b(\d+)D(\d+)\b/i)
-  if (result === null) {
-    return
-  }
-
-  const diceCount = parseInt(result[1], 10)
-  const maxNumber = parseInt(result[2], 10)
+app.message(/\b(\d+)D(\d+)\b/i, ({ context, say }) => {
+  const diceCount = parseInt(context.matches[1], 10)
+  const maxNumber = parseInt(context.matches[2], 10)
 
   if (diceCount === 0 || maxNumber === 0) {
     return
@@ -59,7 +49,7 @@ app.message(/\b\d+D\d+\b/i, ({ message, say }) => {
 
   const sum = numbers.reduce((sum, num) => sum + num)
 
-  say(`${result[0]} => ${numbers}\n合計: ${sum}`)
+  say(`${diceCount}D${maxNumber} => ${numbers}\n合計: ${sum}`)
 })
 
 export const thunder = functions.https.onRequest(expressReceiver.app)
