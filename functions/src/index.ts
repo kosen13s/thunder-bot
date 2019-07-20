@@ -48,7 +48,7 @@ app.message(/\b\d+D\d+\b/i, ({ message, say }) => {
   }
   if (diceCount * maxNumber > 1e8) {
     say(
-      `ダイスの合計値が十分に大きいため、thunder-botはダイスの実行を中止しました。(${result[0]})`
+      'ダイスの出目の合計の最大値が1億を超えたため、thunder-botはダイスの実行を中止しました。'
     )
     return
   }
