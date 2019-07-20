@@ -36,6 +36,10 @@ app.message(/\b\d+D\d+\b/i, ({ message, say }) => {
 
   const diceCount = parseInt(result[1], 10)
   const maxNumber = parseInt(result[2], 10)
+
+  if (diceCount === 0 || maxNumber === 0) {
+    return
+  }
   if (diceCount > 256) {
     say(
       `${diceCount}個のダイスが要求されましたが、振れるダイスの数は256個までです。`
