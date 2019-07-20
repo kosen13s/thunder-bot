@@ -4,7 +4,7 @@ import { App, ExpressReceiver } from '@slack/bolt'
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //
-export const helloWorld = functions.https.onRequest((_, response): void => {
+export const helloWorld = functions.https.onRequest((_, response) => {
   response.send('Hello from Firebase!')
 })
 
@@ -23,7 +23,7 @@ const app = new App({
 })
 
 app.error(console.log)
-app.message('hello', ({ message, say }): void => {
+app.message('hello', ({ message, say }) => {
   say(`Hello <@${message.user}>!`)
 })
 
