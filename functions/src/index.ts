@@ -52,8 +52,9 @@ app.message(/\b\d+D\d+\b/i, ({ message, say }) => {
     )
     return
   }
-  const numbers = Array.from(Array(diceCount), () =>
-    Math.ceil(maxNumber * Math.random())
+  const numbers = Array.from(
+    Array(diceCount),
+    () => Math.floor(maxNumber * Math.random()) + 1
   )
 
   const sum = numbers.reduce((sum, num) => sum + num)
