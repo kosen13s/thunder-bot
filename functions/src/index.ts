@@ -1,12 +1,12 @@
-import * as functions from 'firebase-functions';
+import * as functions from 'firebase-functions'
 import { App, ExpressReceiver } from '@slack/bolt'
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //
 export const helloWorld = functions.https.onRequest((_, response) => {
-  response.send("Hello from Firebase!");
-});
+  response.send('Hello from Firebase!')
+})
 
 // ref: https://github.com/seratch/bolt-on-cloud-functions-for-firebase
 
@@ -14,12 +14,12 @@ const config = functions.config()
 
 const expressReceiver = new ExpressReceiver({
   signingSecret: config.slack.secret,
-  endpoints: '/events'
+  endpoints: '/events',
 })
 
 const app = new App({
   receiver: expressReceiver,
-  token: config.slack.bot.token
+  token: config.slack.bot.token,
 })
 
 app.error(console.log)

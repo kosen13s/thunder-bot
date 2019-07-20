@@ -8,10 +8,14 @@ jobs:
     steps:
       - checkout
       - run:
-          working_directory: functions
           name: install dependencies
-          command: yarn install --frozen-lockfile
+          command: |
+            yarn install --frozen-lockfile
+            yarn --cwd functions install --frozen-lockfile
       - run:
           working_directory: functions
           name: build functions
           command: yarn build
+      - run:
+          name: lint
+          command: yarn lint
