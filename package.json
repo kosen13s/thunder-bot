@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "lint": "eslint --ext .js,.ts ."
+    "lint": "eslint --ext .js,.ts --max-warnings 0 ."
   },
   "husky": {
     "hooks": {
@@ -17,7 +17,7 @@
   },
   "lint-staged": {
     "*.{js,ts}": [
-      "eslint --fix",
+      "eslint --fix --max-warnings 0",
       "git add"
     ]
   },
