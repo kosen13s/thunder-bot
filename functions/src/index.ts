@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions'
 import { App, ExpressReceiver } from '@slack/bolt'
+import { rollDice } from './controller/dice-controller'
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -23,8 +24,14 @@ const app = new App({
 })
 
 app.error(console.log)
-app.message('hello', ({ message, say }) => {
-  say(`Hello <@${message.user}>!`)
+app.message(/\b(\d+)D(\d+)\b/i, ({ context, say }) => {
+  const diceCount = parseInt(context.matches[1], 10)
+  const maxNumber = parseInt(context.matches[2], 10)
+
+  const result = rollDice(diceCount, maxNumber)
+  if (result) {
+    say(result)
+  }
 })
 
 export const thunder = functions.https.onRequest(expressReceiver.app)
