@@ -1,7 +1,6 @@
 import * as functions from 'firebase-functions'
 import { App, ExpressReceiver, directMention } from '@slack/bolt'
 import { rollDice } from './controller/dice-controller'
-import { ping } from './controller/ping-controller'
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -34,7 +33,7 @@ app.message(/\b(\d+)D(\d+)\b/i, ({ context, say }) => {
     say(result)
   }
 })
-app.message(directMention, ping, ({ say }) => {
+app.message(/\bping\b/i, directMention(), ({ say }) => {
   say('pong')
 })
 
