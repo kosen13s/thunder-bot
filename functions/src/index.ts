@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions'
-import { App, ExpressReceiver } from '@slack/bolt'
+import { App, ExpressReceiver, directMention } from '@slack/bolt'
 import { rollDice } from './controller/dice-controller'
 
 // // Start writing Firebase Functions
@@ -32,6 +32,9 @@ app.message(/\b(\d+)D(\d+)\b/i, ({ context, say }) => {
   if (result) {
     say(result)
   }
+})
+app.message(/\bping\b/i, directMention(), ({ say }) => {
+  say('pong')
 })
 
 export const thunder = functions.https.onRequest(expressReceiver.app)
