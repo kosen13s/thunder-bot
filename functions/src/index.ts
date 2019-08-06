@@ -1,6 +1,10 @@
 import * as functions from 'firebase-functions'
 import { App, ExpressReceiver, directMention } from '@slack/bolt'
 import { rollDice } from './controller/dice-controller'
+import {
+  stopDaisougen,
+  startDaisougen,
+} from './controller/daisougen-controller'
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -36,5 +40,8 @@ app.message(/\b(\d+)D(\d+)\b/i, ({ context, say }) => {
 app.message(/\bping\b/i, directMention(), ({ say }) => {
   say('pong')
 })
+
+app.message(/^大草原スロット$/, startDaisougen(app.client))
+app.event('reaction_added', stopDaisougen(app.client))
 
 export const thunder = functions.https.onRequest(expressReceiver.app)
