@@ -2,6 +2,9 @@ import { WebClient } from '@slack/web-api'
 import { Middleware, SlackEventMiddlewareArgs } from '@slack/bolt'
 import * as functions from 'firebase-functions'
 
+const botAlias = 'daisougen-slot'
+const daisougenEmoji = (i: string | number): string => `daisougen-roulette-${i}`
+
 export const startDaisougen = (
   client: WebClient
 ): Middleware<SlackEventMiddlewareArgs<'message'>> => {
@@ -9,9 +12,10 @@ export const startDaisougen = (
     const result: any = await client.chat.postMessage({
       token: context.botToken,
       channel: message.channel,
-      text:
-        ':daisougen-roulette-1::daisougen-roulette-2::daisougen-roulette-3:',
-      username: 'daisougen-slot',
+      text: `:${daisougenEmoji(1)}::${daisougenEmoji(2)}::${daisougenEmoji(
+        3
+      )}:`,
+      username: botAlias,
     })
 
     console.log(result)
@@ -63,7 +67,7 @@ export const stopDaisougen = (
     const message = result.messages[0]
     console.log('history', message)
 
-    if (message.username !== 'daisougen-slot') {
+    if (message.username !== botAlias) {
       console.log('username', message.username)
       return
     }
@@ -73,7 +77,7 @@ export const stopDaisougen = (
       parseInt(reactionTs + match[1], 10) % 3
     ]
     const newText = (message.text as string).replace(
-      `daisougen-roulette-${match[1]}`,
+      daisougenEmoji(match[1]),
       newEmoji
     )
 
