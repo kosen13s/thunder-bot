@@ -42,6 +42,6 @@ app.message(/\bping\b/i, directMention(), ({ say }) => {
 })
 
 app.message(/^大草原スロット$/, startDaisougen(app.client))
-app.event('reaction_added', stopDaisougen(app.client))
+app.event('reaction_added', stopDaisougen(app.client, config.slack.user.token))
 
 export const thunder = functions.https.onRequest(expressReceiver.app)

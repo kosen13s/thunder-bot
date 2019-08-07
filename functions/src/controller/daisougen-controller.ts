@@ -1,6 +1,5 @@
 import { WebClient } from '@slack/web-api'
 import { Middleware, SlackEventMiddlewareArgs } from '@slack/bolt'
-import * as functions from 'firebase-functions'
 
 const botAlias = 'daisougen-slot'
 const daisougenEmoji = (i: string | number): string => `daisougen-roulette-${i}`
@@ -32,10 +31,9 @@ export const startDaisougen = (
 }
 
 export const stopDaisougen = (
-  client: WebClient
+  client: WebClient,
+  userToken: string
 ): Middleware<SlackEventMiddlewareArgs<'reaction_added'>> => {
-  const userToken = functions.config().slack.user.token
-
   return async ({ event, context }) => {
     console.log('reaction', event)
     const match = event.reaction.match(/^push-([123])$/)
