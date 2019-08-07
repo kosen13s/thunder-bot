@@ -1,14 +1,58 @@
 import { WebClient } from '@slack/web-api'
 import { Middleware, SlackEventMiddlewareArgs } from '@slack/bolt'
 
+type ReactionAddedEventItem =
+  | {
+      type: 'message'
+      channel: string
+      ts: string
+    }
+  | {
+      type: '' // ファイルコメントなど、省略
+    }
+
 const botAlias = 'daisougen-slot'
 const daisougenEmoji = (i: string | number): string => `daisougen-roulette-${i}`
+
+interface MessageFetchResult {
+  text: string
+  username: string
+}
+
+const fetchMessage = async (
+  client: WebClient,
+  userToken: string,
+  channel: string,
+  ts: string
+): Promise<MessageFetchResult | null> => {
+  try {
+    const result: {
+      [key: string]: unknown
+    } = await client.conversations.history({
+      token: userToken,
+      channel: channel,
+      latest: ts,
+      limit: 1,
+      inclusive: true,
+    })
+
+    if (!(result.messages instanceof Array)) {
+      throw result
+    }
+
+    return result.messages[0]
+  } catch (err) {
+    console.log('history failed', err)
+
+    return null
+  }
+}
 
 export const startDaisougen = (
   client: WebClient
 ): Middleware<SlackEventMiddlewareArgs<'message'>> => {
   return async ({ message, context }) => {
-    const result: any = await client.chat.postMessage({
+    const result: { [key: string]: unknown } = await client.chat.postMessage({
       token: context.botToken,
       channel: message.channel,
       text: `:${daisougenEmoji(1)}::${daisougenEmoji(2)}::${daisougenEmoji(
@@ -24,7 +68,7 @@ export const startDaisougen = (
         token: context.botToken,
         name: `push-${i}`,
         channel: message.channel,
-        timestamp: result.ts,
+        timestamp: result.ts as string,
       })
     }
   }
@@ -36,43 +80,36 @@ export const stopDaisougen = (
 ): Middleware<SlackEventMiddlewareArgs<'reaction_added'>> => {
   return async ({ event, context }) => {
     console.log('reaction', event)
+
     const match = event.reaction.match(/^push-([123])$/)
-    if (match === null || (event.item as any).type !== 'message') {
+    const item = event.item as ReactionAddedEventItem
+
+    if (match === null || item.type !== 'message') {
       return
     }
 
     console.log('reaction match', match)
-    const item = event.item as { channel: string; ts: string }
 
-    let result: any
-    try {
-      result = await client.conversations.history({
-        token: userToken,
-        channel: item.channel,
-        latest: item.ts,
-        limit: 1,
-        inclusive: true,
-      })
-    } catch (err) {
-      console.log('history failed', err)
-      console.log('response metadata')
-      console.log(' S:', err.data.response_metadata.scopes)
-      console.log('AS:', err.data.response_metadata.acceptedScopes)
+    const message = await fetchMessage(client, userToken, item.channel, item.ts)
+    console.log('history', message)
 
+    if (message === null) {
       return
     }
-
-    const message = result.messages[0]
-    console.log('history', message)
 
     if (message.username !== botAlias) {
       console.log('username', message.username)
       return
     }
 
-    const reactionTs = event.event_ts.match(/[^.]*/)![0]
+    const reactionTss = event.event_ts.match(/[^.]*/)
+    if (reactionTss === null) {
+      console.log('stopFailed')
+      return
+    }
+
     const newEmoji = ['dai', 'sou', 'gen'][
-      parseInt(reactionTs + match[1], 10) % 3
+      parseInt(reactionTss[0] + match[1], 10) % 3
     ]
     const newText = (message.text as string).replace(
       daisougenEmoji(match[1]),
