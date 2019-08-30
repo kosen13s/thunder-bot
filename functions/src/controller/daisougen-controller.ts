@@ -36,6 +36,7 @@ const fetchMessage = async (
       inclusive: true,
     })
 
+    console.log(result.messages)
     if (!(result.messages instanceof Array)) {
       throw result
     }
@@ -59,6 +60,7 @@ export const startDaisougen = (
         3
       )}:`,
       username: botAlias,
+      icon_emoji: ':slot_machine:', // eslint-disable-line
     })
 
     console.log(result)
