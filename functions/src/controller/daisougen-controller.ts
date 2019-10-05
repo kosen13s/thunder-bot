@@ -110,10 +110,9 @@ export const stopDaisougen = (
       return
     }
 
-    // const newEmoji = ['dai', 'sou', 'gen'][
-    //   parseInt(reactionTss[0] + match[1], 10) % 3
-    // ]
-    const newEmoji = 'sou'
+    const newEmoji = ['dai', 'sou', 'gen'][
+      parseInt(reactionTss[0] + match[1], 10) % 3
+    ]
     const newText = (message.text as string).replace(
       daisougenEmoji(match[1]),
       newEmoji
