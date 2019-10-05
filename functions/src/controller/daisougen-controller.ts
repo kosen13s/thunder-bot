@@ -110,9 +110,7 @@ export const stopDaisougen = (
       return
     }
 
-    const newEmoji = ['dai', 'sou', 'gen'][
-      parseInt(reactionTss[0] + match[1], 10) % 3
-    ]
+    const newEmoji = ['dai', 'sou', 'gen'][Math.floor(Math.random() * 3)]
     const newText = (message.text as string).replace(
       daisougenEmoji(match[1]),
       newEmoji
@@ -128,5 +126,20 @@ export const stopDaisougen = (
     })
 
     console.log('updated', updated)
+
+    if (newText === ':sou::sou::sou:') {
+      // 草フィーバー
+      await new Promise(resolve => setTimeout(resolve, 1000)) // 普通にsetTimeoutするとfunction実行終了で途切れる
+      const grasses = ':kusa::kusa::kusa:'
+      console.log('new text', grasses)
+
+      const updated = await client.chat.update({
+        token: context.botToken,
+        channel: item.channel,
+        ts: item.ts,
+        text: grasses,
+      })
+      console.log('updated', updated)
+    }
   }
 }
