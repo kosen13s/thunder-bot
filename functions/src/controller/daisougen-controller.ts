@@ -56,6 +56,7 @@ export const startDaisougen = (
     const result: { [key: string]: unknown } = await client.chat.postMessage({
       token: context.botToken,
       channel: message.channel,
+      thread_ts: message.thread_ts, // eslint-disable-line @typescript-eslint/camelcase
       text: `:${daisougenEmoji(1)}::${daisougenEmoji(2)}::${daisougenEmoji(
         3
       )}:`,

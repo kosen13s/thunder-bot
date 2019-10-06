@@ -28,17 +28,25 @@ const app = new App({
 })
 
 app.error(console.log)
-app.message(/\b(\d+)D(\d+)\b/i, ({ context, say }) => {
+app.message(/\b(\d+)D(\d+)\b/i, ({ context, message, say }) => {
   const diceCount = parseInt(context.matches[1], 10)
   const maxNumber = parseInt(context.matches[2], 10)
 
   const result = rollDice(diceCount, maxNumber)
   if (result) {
-    say(result)
+    say({
+      channel: message.channel,
+      thread_ts: message.thread_ts, // eslint-disable-line @typescript-eslint/camelcase
+      text: result,
+    })
   }
 })
-app.message(/\bping\b/i, directMention(), ({ say }) => {
-  say('pong')
+app.message(/\bping\b/i, directMention(), ({ message, say }) => {
+  say({
+    channel: message.channel,
+    thread_ts: message.thread_ts, // eslint-disable-line @typescript-eslint/camelcase
+    text: 'pong',
+  })
 })
 
 app.message(/^大草原スロット$/, startDaisougen(app.client))
