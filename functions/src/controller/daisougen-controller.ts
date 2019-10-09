@@ -28,10 +28,10 @@ const fetchMessage = async (
   try {
     const result: {
       [key: string]: unknown
-    } = await client.conversations.history({
+    } = await client.conversations.replies({
       token: userToken,
       channel: channel,
-      latest: ts,
+      ts,
       limit: 1,
       inclusive: true,
     })
@@ -86,6 +86,7 @@ export const stopDaisougen = (
 
     const match = event.reaction.match(/^push-([123])$/)
     const item = event.item as ReactionAddedEventItem
+    console.log('item', item)
 
     if (match === null || item.type !== 'message') {
       return
