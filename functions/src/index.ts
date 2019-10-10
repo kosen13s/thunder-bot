@@ -5,7 +5,7 @@ import {
   stopDaisougen,
   startDaisougen,
 } from './controller/daisougen-controller'
-import { sayToSameChannel } from './wrapper/bolt'
+import { generateSayArgument } from './wrapper/bolt'
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -35,11 +35,11 @@ app.message(/\b(\d+)D(\d+)\b/i, ({ context, message, say }) => {
 
   const result = rollDice(diceCount, maxNumber)
   if (result) {
-    sayToSameChannel(say, message, result)
+    say(generateSayArgument(message, result))
   }
 })
 app.message(/\bping\b/i, directMention(), ({ message, say }) => {
-  sayToSameChannel(say, message, 'pong')
+  say(generateSayArgument(message, 'pong'))
 })
 
 app.message(/^大草原スロット$/, startDaisougen(app.client))
