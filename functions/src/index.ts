@@ -5,6 +5,7 @@ import {
   stopDaisougen,
   startDaisougen,
 } from './controller/daisougen-controller'
+import { generateSayArgument } from './wrapper/bolt'
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
@@ -28,17 +29,17 @@ const app = new App({
 })
 
 app.error(console.log)
-app.message(/\b(\d+)D(\d+)\b/i, ({ context, say }) => {
+app.message(/\b(\d+)D(\d+)\b/i, ({ context, message, say }) => {
   const diceCount = parseInt(context.matches[1], 10)
   const maxNumber = parseInt(context.matches[2], 10)
 
   const result = rollDice(diceCount, maxNumber)
   if (result) {
-    say(result)
+    say(generateSayArgument(message, result))
   }
 })
-app.message(/\bping\b/i, directMention(), ({ say }) => {
-  say('pong')
+app.message(/\bping\b/i, directMention(), ({ message, say }) => {
+  say(generateSayArgument(message, 'pong'))
 })
 
 app.message(/^大草原スロット$/, startDaisougen(app.client))

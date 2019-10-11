@@ -28,10 +28,10 @@ const fetchMessage = async (
   try {
     const result: {
       [key: string]: unknown
-    } = await client.conversations.history({
+    } = await client.conversations.replies({
       token: userToken,
       channel: channel,
-      latest: ts,
+      ts,
       limit: 1,
       inclusive: true,
     })
@@ -56,6 +56,7 @@ export const startDaisougen = (
     const result: { [key: string]: unknown } = await client.chat.postMessage({
       token: context.botToken,
       channel: message.channel,
+      thread_ts: message.thread_ts, // eslint-disable-line @typescript-eslint/camelcase
       text: `:${daisougenEmoji(1)}::${daisougenEmoji(2)}::${daisougenEmoji(
         3
       )}:`,
