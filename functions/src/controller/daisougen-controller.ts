@@ -86,7 +86,6 @@ export const stopDaisougen = (
 
     const match = event.reaction.match(/^push-([123])$/)
     const item = event.item as ReactionAddedEventItem
-    console.log('item', item)
 
     if (match === null || item.type !== 'message') {
       return
