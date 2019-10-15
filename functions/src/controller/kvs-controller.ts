@@ -34,3 +34,32 @@ export const saveThunderKvs: Middleware<SlackCommandMiddlewareArgs> = async ({
     text: succeedSave ? `saved \`${key}\` as \`${value}\`` : 'error',
   })
 }
+
+const loadFirestore = async (key: string) => {
+  const doc = await firestore
+    .collection('kvs')
+    .doc(key)
+    .get()
+  const data = doc.data()
+  return data ? data.value : undefined
+}
+
+const loadKvs = async (key: string) => {
+  return loadFirestore(key).catch(() => undefined)
+}
+
+export const loadThunderKvs: Middleware<SlackCommandMiddlewareArgs> = async ({
+  ack,
+  command,
+  respond,
+}) => {
+  ack('loading...')
+  const key = command.text.trim()
+  const value = await loadKvs(key)
+  respond({
+    channel: command.channel_name,
+    text: value
+      ? `saved value for \`${key}\` is \`${value}\``
+      : `no value is saved for \`${key}\``,
+  })
+}

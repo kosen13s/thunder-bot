@@ -6,7 +6,7 @@ import {
   startDaisougen,
 } from './controller/daisougen-controller'
 import { generateSayArgument } from './wrapper/bolt'
-import { saveThunderKvs } from './controller/kvs-controller'
+import { saveThunderKvs, loadThunderKvs } from './controller/kvs-controller'
 // import { saveThunderKvs } from './controller/kvs-controller'
 
 // // Start writing Firebase Functions
@@ -48,5 +48,6 @@ app.message(/^大草原スロット$/, startDaisougen(app.client))
 app.event('reaction_added', stopDaisougen(app.client, config.slack.user.token))
 
 app.command('/save-thunder-kvs', saveThunderKvs)
+app.command('/load-thunder-kvs', loadThunderKvs)
 
 export const thunder = functions.https.onRequest(expressReceiver.app)
