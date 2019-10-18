@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "postinstall": "yarn --cwd functions",
     "lint": "eslint --ext .js,.ts --max-warnings 0 .",
     "deploy": "firebase deploy"
   },
