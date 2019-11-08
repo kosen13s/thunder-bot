@@ -4,11 +4,19 @@ import {
   MessageAction,
 } from '@slack/bolt'
 
-const generateGyotakuMessage = (message: MessageAction) => `
+const tsToDateTimeString = (ts: string) => {
+  const unixTime = Math.floor(Number(ts))
+  const date = new Date(unixTime * 1000)
+  return date.toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' })
+}
+
+const generateGyotakuMessage = (body: MessageAction) => `
 \`\`\`
-${message.user.id} [${message.message_ts}]
-${message}
+channel: <#${body.channel.id}>
+user: ${body.message.username}
+timestamp: ${tsToDateTimeString(body.message_ts)}
 \`\`\`
+${body.message.text}
 `
 
 export const takeGyotaku: Middleware<SlackActionMiddlewareArgs> = ({
@@ -17,7 +25,6 @@ export const takeGyotaku: Middleware<SlackActionMiddlewareArgs> = ({
   say,
 }) => {
   ack()
-  console.log(body)
   if (body.type !== 'message_action') {
     return
   }
