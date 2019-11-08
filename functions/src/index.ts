@@ -7,6 +7,7 @@ import {
 } from './controller/daisougen-controller'
 import { generateSayArgument } from './wrapper/bolt'
 import { saveThunderKvs, loadThunderKvs } from './controller/kvs-controller'
+import { takeGyotaku } from './controller/gyotaku-controller'
 // import { saveThunderKvs } from './controller/kvs-controller'
 
 // // Start writing Firebase Functions
@@ -49,5 +50,7 @@ app.event('reaction_added', stopDaisougen(app.client, config.slack.user.token))
 
 app.command('/save-thunder-kvs', saveThunderKvs)
 app.command('/load-thunder-kvs', loadThunderKvs)
+
+app.action({ callback_id: 'gyotaku' }, takeGyotaku) // eslint-disable-line @typescript-eslint/camelcase
 
 export const thunder = functions.https.onRequest(expressReceiver.app)
