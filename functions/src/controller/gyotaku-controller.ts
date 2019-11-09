@@ -1,9 +1,6 @@
-import {
-  Middleware,
-  SlackActionMiddlewareArgs,
-  MessageAction,
-} from '@slack/bolt'
+import { MessageAction } from '@slack/bolt'
 import { WebClient } from '@slack/web-api'
+import { ActionHandler } from '../types'
 
 const tsToDateTimeString = (ts: string) => {
   const unixTime = Math.floor(Number(ts))
@@ -31,7 +28,7 @@ ${threeBackQuotes}
 export const takeGyotaku = (
   client: WebClient,
   notifyTo: string
-): Middleware<SlackActionMiddlewareArgs<MessageAction>> => {
+): ActionHandler<MessageAction> => {
   return async ({ ack, body, context }) => {
     ack()
     if (body.type !== 'message_action') {
