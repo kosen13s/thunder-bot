@@ -1,3 +1,4 @@
+import { config } from 'firebase-functions'
 import {
   Middleware,
   SlackActionMiddlewareArgs,
@@ -29,7 +30,7 @@ export const takeGyotaku: Middleware<SlackActionMiddlewareArgs> = ({
     return
   }
   say({
-    channel: 'gyotaku',
+    channel: config().slack.gyotaku.channel,
     text: generateGyotakuMessage(body),
   })
 }
