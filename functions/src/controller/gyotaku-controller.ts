@@ -34,14 +34,9 @@ export const takeGyotaku = (
     if (body.type !== 'message_action') {
       return
     }
-    /* <@USER_ID> の形式のユーザ解決って確か非推奨だった気がするので、正規の手段で解決する方法をコメントで残しておく
-      const usersInfoResult: any = await client.users.info({
-        token: context.botToken,
-        user: body.message.user!}).catch(() => {user: {}})
-    */
+
     const text = generateGyotakuMessage({
       channel: body.channel.id,
-      // user: usersInfoResult.user.name,
       ...body.message,
     })
 
