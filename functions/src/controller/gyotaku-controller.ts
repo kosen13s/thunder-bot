@@ -15,7 +15,7 @@ const tsToDateTimeString = (ts: string) => {
 interface GenerateGyotakuMessageParams {
   channel: string
   user?: string
-  timestamp: string
+  ts: string
   text?: string
 }
 
@@ -25,7 +25,7 @@ const generateGyotakuMessage = (params: GenerateGyotakuMessageParams) => {
 ${threeBackQuotes}
 channel: <#${params.channel}>
 user: <@${params.user}>
-timestamp: ${tsToDateTimeString(params.timestamp)}
+timestamp: ${tsToDateTimeString(params.ts)}
 ${threeBackQuotes}
 ${params.text}
 `
@@ -47,9 +47,7 @@ export const takeGyotaku = (
     const text = generateGyotakuMessage({
       channel: body.channel.id,
       // user: usersInfoResult.user.name,
-      user: body.message.user,
-      timestamp: body.message_ts,
-      text: body.message.text,
+      ...body.message,
     })
 
     await client.chat.postMessage({
