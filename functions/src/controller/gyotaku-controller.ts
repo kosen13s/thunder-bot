@@ -1,4 +1,3 @@
-import { config } from 'firebase-functions'
 import {
   Middleware,
   SlackActionMiddlewareArgs,
@@ -32,7 +31,8 @@ ${params.text}
 }
 
 export const takeGyotaku = (
-  client: WebClient
+  client: WebClient,
+  notifyTo: string
 ): Middleware<SlackActionMiddlewareArgs<MessageAction>> => {
   return async ({ ack, body, context }) => {
     ack()
@@ -52,7 +52,7 @@ export const takeGyotaku = (
 
     await client.chat.postMessage({
       token: context.botToken,
-      channel: config().slack.gyotaku.channel,
+      channel: notifyTo,
       text,
     })
   }
