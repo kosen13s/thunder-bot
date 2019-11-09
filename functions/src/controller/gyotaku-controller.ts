@@ -15,7 +15,6 @@ interface GenerateGyotakuMessageParams {
   channel: string
   user?: string
   ts: string
-  text?: string
 }
 
 const generateGyotakuMessage = (params: GenerateGyotakuMessageParams) => {
@@ -26,7 +25,6 @@ channel: <#${params.channel}>
 user: <@${params.user}>
 timestamp: ${tsToDateTimeString(params.ts)}
 ${threeBackQuotes}
-${params.text}
 `
 }
 
@@ -50,10 +48,17 @@ export const takeGyotaku = (
       ...body.message,
     })
 
-    await client.chat.postMessage({
+    const postResult = await client.chat.postMessage({
       token: context.botToken,
       channel: notifyTo,
       text,
+    })
+
+    await client.chat.postMessage({
+      token: context.botToken,
+      channel: postResult.channel as string,
+      thread_ts: postResult.ts as string, // eslint-disable-line @typescript-eslint/camelcase
+      text: body.message.text || 'No body.',
     })
   }
 }
