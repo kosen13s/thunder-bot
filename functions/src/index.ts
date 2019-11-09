@@ -51,6 +51,6 @@ app.event('reaction_added', stopDaisougen(app.client, config.slack.user.token))
 app.command('/save-thunder-kvs', saveThunderKvs)
 app.command('/load-thunder-kvs', loadThunderKvs)
 
-app.action({ callback_id: 'gyotaku' }, takeGyotaku) // eslint-disable-line @typescript-eslint/camelcase
+app.action({ callback_id: 'gyotaku' }, takeGyotaku(app.client)) // eslint-disable-line @typescript-eslint/camelcase
 
 export const thunder = functions.https.onRequest(expressReceiver.app)
