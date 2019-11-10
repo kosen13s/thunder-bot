@@ -8,7 +8,6 @@ import {
 import { generateSayArgument } from './wrapper/bolt'
 import { saveThunderKvs, loadThunderKvs } from './controller/kvs-controller'
 import { takeGyotaku } from './controller/gyotaku-controller'
-// import { saveThunderKvs } from './controller/kvs-controller'
 
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
