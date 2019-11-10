@@ -9,9 +9,8 @@ import { generateSayArgument } from './wrapper/bolt'
 import { saveThunderKvs, loadThunderKvs } from './controller/kvs-controller'
 import { takeGyotaku } from './controller/gyotaku-controller'
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
+// Start writing Firebase Functions
+// https://firebase.google.com/docs/functions/typescript
 export const helloWorld = functions.https.onRequest((_, response) => {
   response.send('Hello from Firebase!')
 })
