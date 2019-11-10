@@ -49,7 +49,6 @@ app.event('reaction_added', stopDaisougen(app.client, config.slack.user.token))
 app.command('/save-thunder-kvs', saveThunderKvs)
 app.command('/load-thunder-kvs', loadThunderKvs)
 
-/* eslint-disable @typescript-eslint/camelcase */
 app.action(
   { callback_id: 'gyotaku' },
   takeGyotaku(app.client, config.slack.gyotaku.channel)

@@ -49,7 +49,7 @@ export const takeGyotaku = (
     await client.chat.postMessage({
       token: context.botToken,
       channel: postResult.channel as string,
-      thread_ts: postResult.ts as string, // eslint-disable-line @typescript-eslint/camelcase
+      thread_ts: postResult.ts as string,
       text: body.message.text || 'No body.',
     })
   }
