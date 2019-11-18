@@ -56,12 +56,12 @@ export const startDaisougen = (
     const result: { [key: string]: unknown } = await client.chat.postMessage({
       token: context.botToken,
       channel: message.channel,
-      thread_ts: message.thread_ts, // eslint-disable-line @typescript-eslint/camelcase
+      thread_ts: message.thread_ts,
       text: `:${daisougenEmoji(1)}::${daisougenEmoji(2)}::${daisougenEmoji(
         3
       )}:`,
       username: botAlias,
-      icon_emoji: ':slot_machine:', // eslint-disable-line
+      icon_emoji: ':slot_machine:',
     })
 
     console.log(result)
