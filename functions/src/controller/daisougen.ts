@@ -1,15 +1,19 @@
 import { WebClient } from '@slack/web-api'
 import { Middleware, SlackEventMiddlewareArgs } from '@slack/bolt'
 
+interface MessageReactionAddedEvent {
+  type: 'message'
+  channel: string
+  ts: string
+}
+
+interface OtherReactionAddedEvent {
+  type: '' // ファイルコメントなど、省略
+}
+
 type ReactionAddedEventItem =
-  | {
-      type: 'message'
-      channel: string
-      ts: string
-    }
-  | {
-      type: '' // ファイルコメントなど、省略
-    }
+  | MessageReactionAddedEvent
+  | OtherReactionAddedEvent
 
 const botAlias = 'daisougen-slot'
 const daisougenEmoji = (i: string | number): string => `daisougen-roulette-${i}`
