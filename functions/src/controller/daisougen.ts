@@ -1,5 +1,5 @@
 import { WebClient } from '@slack/web-api'
-import { Middleware, SlackEventMiddlewareArgs } from '@slack/bolt'
+import { MessageHandler, ReactionHandler } from '../types'
 
 export const START_DAISOUGEN_MESSAGE = /^大草原スロット$/
 export const STOP_DAISOUGEN_EVENT = 'reaction_added'
@@ -56,9 +56,7 @@ const fetchMessage = async (
   }
 }
 
-export const startDaisougen = (
-  client: WebClient
-): Middleware<SlackEventMiddlewareArgs<'message'>> => {
+export const startDaisougen = (client: WebClient): MessageHandler => {
   return async ({ message, context }) => {
     const result: { [key: string]: unknown } = await client.chat.postMessage({
       token: context.botToken,
@@ -87,7 +85,7 @@ export const startDaisougen = (
 export const stopDaisougen = (
   client: WebClient,
   userToken: string
-): Middleware<SlackEventMiddlewareArgs<'reaction_added'>> => {
+): ReactionHandler => {
   return async ({ event, context }) => {
     console.log('reaction', event)
 

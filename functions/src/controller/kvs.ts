@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin'
-import { Middleware, SlackCommandMiddlewareArgs } from '@slack/bolt'
+import { CommandHandler } from '../types'
 admin.initializeApp()
 
 const firestore = admin.firestore()
@@ -24,7 +24,7 @@ const saveKvs = async (key: string, value: string) => {
   }
 }
 
-export const saveThunderKvs: Middleware<SlackCommandMiddlewareArgs> = async ({
+export const saveThunderKvs: CommandHandler = async ({
   ack,
   command,
   respond,
@@ -51,7 +51,7 @@ const loadKvs = async (key: string) => {
   return loadFirestore(key).catch(() => undefined)
 }
 
-export const loadThunderKvs: Middleware<SlackCommandMiddlewareArgs> = async ({
+export const loadThunderKvs: CommandHandler = async ({
   ack,
   command,
   respond,
