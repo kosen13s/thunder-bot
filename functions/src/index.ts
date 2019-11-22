@@ -1,8 +1,7 @@
 import * as functions from 'firebase-functions'
 import { App, ExpressReceiver, directMention } from '@slack/bolt'
-import { rollDice } from './controller/dice'
+import { dice } from './controller/dice'
 import { stopDaisougen, startDaisougen } from './controller/daisougen'
-import { generateSayArgument } from './wrapper/bolt'
 import { saveThunderKvs, loadThunderKvs } from './controller/kvs'
 import { takeGyotaku } from './controller/gyotaku'
 import { ping } from './controller/ping'
@@ -28,15 +27,7 @@ const app = new App({
 })
 
 app.error(console.log)
-app.message(/\b(\d+)D(\d+)\b/i, ({ context, message, say }) => {
-  const diceCount = parseInt(context.matches[1], 10)
-  const maxNumber = parseInt(context.matches[2], 10)
-
-  const result = rollDice(diceCount, maxNumber)
-  if (result) {
-    say(generateSayArgument(message, result))
-  }
-})
+app.message(/\b(\d+)D(\d+)\b/i, dice)
 app.message(/\bping\b/i, directMention(), ping)
 
 app.message(/^大草原スロット$/, startDaisougen(app.client))
