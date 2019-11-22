@@ -1,8 +1,6 @@
-import { MessageAction, ActionConstraints } from '@slack/bolt'
+import { MessageAction } from '@slack/bolt'
 import { WebClient } from '@slack/web-api'
 import { ActionHandler } from '../types'
-
-export const GYOTAKU_ACTION: ActionConstraints = { callback_id: 'gyotaku' }
 
 const tsToDateTimeString = (ts: string) => {
   const unixTime = Math.floor(Number(ts))

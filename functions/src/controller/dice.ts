@@ -1,8 +1,6 @@
 import { MessageHandler } from '../types'
 import { generateSayArgument } from '../wrapper/bolt'
 
-export const DICE_MESSAGE = /\b(\d+)D(\d+)\b/i
-
 export const rollDice = (
   diceCount: number,
   maxNumber: number
