@@ -1,13 +1,10 @@
 import * as functions from 'firebase-functions'
 import { App, ExpressReceiver, directMention } from '@slack/bolt'
-import { rollDice } from './controller/dice-controller'
-import {
-  stopDaisougen,
-  startDaisougen,
-} from './controller/daisougen-controller'
+import { rollDice } from './controller/dice'
+import { stopDaisougen, startDaisougen } from './controller/daisougen'
 import { generateSayArgument } from './wrapper/bolt'
-import { saveThunderKvs, loadThunderKvs } from './controller/kvs-controller'
-import { takeGyotaku } from './controller/gyotaku-controller'
+import { saveThunderKvs, loadThunderKvs } from './controller/kvs'
+import { takeGyotaku } from './controller/gyotaku'
 
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
