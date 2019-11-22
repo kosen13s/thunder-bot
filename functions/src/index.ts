@@ -5,6 +5,7 @@ import { stopDaisougen, startDaisougen } from './controller/daisougen'
 import { generateSayArgument } from './wrapper/bolt'
 import { saveThunderKvs, loadThunderKvs } from './controller/kvs'
 import { takeGyotaku } from './controller/gyotaku'
+import { ping } from './controller/ping'
 
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
@@ -36,9 +37,7 @@ app.message(/\b(\d+)D(\d+)\b/i, ({ context, message, say }) => {
     say(generateSayArgument(message, result))
   }
 })
-app.message(/\bping\b/i, directMention(), ({ message, say }) => {
-  say(generateSayArgument(message, 'pong'))
-})
+app.message(/\bping\b/i, directMention(), ping)
 
 app.message(/^大草原スロット$/, startDaisougen(app.client))
 app.event('reaction_added', stopDaisougen(app.client, config.slack.user.token))
