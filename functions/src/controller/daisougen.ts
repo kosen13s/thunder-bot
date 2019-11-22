@@ -1,6 +1,9 @@
 import { WebClient } from '@slack/web-api'
 import { Middleware, SlackEventMiddlewareArgs } from '@slack/bolt'
 
+export const START_DAISOUGEN_MESSAGE = /^大草原スロット$/
+export const STOP_DAISOUGEN_EVENT = 'reaction_added'
+
 interface MessageReactionAddedEvent {
   type: 'message'
   channel: string

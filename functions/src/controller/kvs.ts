@@ -4,6 +4,9 @@ admin.initializeApp()
 
 const firestore = admin.firestore()
 
+export const SAVE_THUNDER_KVS_COMMAND = '/save-thunder-kvs'
+export const LOAD_THUNDER_KVS_COMMAND = '/load-thunder-kvs'
+
 const saveFirestore = (key: string, value: string) => {
   return firestore
     .collection('kvs')

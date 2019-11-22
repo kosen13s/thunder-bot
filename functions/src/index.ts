@@ -1,10 +1,20 @@
 import * as functions from 'firebase-functions'
 import { App, ExpressReceiver, directMention } from '@slack/bolt'
-import { dice } from './controller/dice'
-import { stopDaisougen, startDaisougen } from './controller/daisougen'
-import { saveThunderKvs, loadThunderKvs } from './controller/kvs'
-import { takeGyotaku } from './controller/gyotaku'
-import { ping } from './controller/ping'
+import { dice, DICE_MESSAGE } from './controller/dice'
+import {
+  stopDaisougen,
+  startDaisougen,
+  START_DAISOUGEN_MESSAGE,
+  STOP_DAISOUGEN_EVENT,
+} from './controller/daisougen'
+import {
+  saveThunderKvs,
+  loadThunderKvs,
+  SAVE_THUNDER_KVS_COMMAND,
+  LOAD_THUNDER_KVS_COMMAND,
+} from './controller/kvs'
+import { takeGyotaku, GYOTAKU_ACTION } from './controller/gyotaku'
+import { ping, PING_MESSAGE } from './controller/ping'
 
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
@@ -27,17 +37,20 @@ const app = new App({
 })
 
 app.error(console.log)
-app.message(/\b(\d+)D(\d+)\b/i, dice)
-app.message(/\bping\b/i, directMention(), ping)
+app.message(DICE_MESSAGE, dice)
+app.message(PING_MESSAGE, directMention(), ping)
 
-app.message(/^大草原スロット$/, startDaisougen(app.client))
-app.event('reaction_added', stopDaisougen(app.client, config.slack.user.token))
+app.message(START_DAISOUGEN_MESSAGE, startDaisougen(app.client))
+app.event(
+  STOP_DAISOUGEN_EVENT,
+  stopDaisougen(app.client, config.slack.user.token)
+)
 
-app.command('/save-thunder-kvs', saveThunderKvs)
-app.command('/load-thunder-kvs', loadThunderKvs)
+app.command(SAVE_THUNDER_KVS_COMMAND, saveThunderKvs)
+app.command(LOAD_THUNDER_KVS_COMMAND, loadThunderKvs)
 
 app.action(
-  { callback_id: 'gyotaku' },
+  GYOTAKU_ACTION,
   takeGyotaku(app.client, config.slack.gyotaku.channel)
 )
 
