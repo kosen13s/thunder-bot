@@ -16,3 +16,4 @@ export type EventHandler<EventType extends string = string> = Middleware<
   SlackEventMiddlewareArgs<EventType>
 >
 export type MessageHandler = EventHandler<'message'>
+export type ReactionHandler = EventHandler<'reaction_added'>

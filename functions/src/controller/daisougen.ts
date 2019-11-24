@@ -1,15 +1,19 @@
 import { WebClient } from '@slack/web-api'
-import { Middleware, SlackEventMiddlewareArgs } from '@slack/bolt'
+import { MessageHandler, ReactionHandler } from '../types'
+
+interface MessageReactionAddedEvent {
+  type: 'message'
+  channel: string
+  ts: string
+}
+
+interface OtherReactionAddedEvent {
+  type: '' // ファイルコメントなど、省略
+}
 
 type ReactionAddedEventItem =
-  | {
-      type: 'message'
-      channel: string
-      ts: string
-    }
-  | {
-      type: '' // ファイルコメントなど、省略
-    }
+  | MessageReactionAddedEvent
+  | OtherReactionAddedEvent
 
 const botAlias = 'daisougen-slot'
 const daisougenEmoji = (i: string | number): string => `daisougen-roulette-${i}`
@@ -49,9 +53,7 @@ const fetchMessage = async (
   }
 }
 
-export const startDaisougen = (
-  client: WebClient
-): Middleware<SlackEventMiddlewareArgs<'message'>> => {
+export const startDaisougen = (client: WebClient): MessageHandler => {
   return async ({ message, context }) => {
     const result: { [key: string]: unknown } = await client.chat.postMessage({
       token: context.botToken,
@@ -80,7 +82,7 @@ export const startDaisougen = (
 export const stopDaisougen = (
   client: WebClient,
   userToken: string
-): Middleware<SlackEventMiddlewareArgs<'reaction_added'>> => {
+): ReactionHandler => {
   return async ({ event, context }) => {
     console.log('reaction', event)
 

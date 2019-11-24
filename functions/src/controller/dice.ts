@@ -1,3 +1,6 @@
+import { MessageHandler } from '../types'
+import { generateSayArgument } from '../wrapper/bolt'
+
 export const rollDice = (
   diceCount: number,
   maxNumber: number
@@ -19,4 +22,14 @@ export const rollDice = (
   const sum = numbers.reduce((sum, num) => sum + num)
 
   return `${diceCount}D${maxNumber} => ${numbers}\n合計: ${sum}`
+}
+
+export const dice: MessageHandler = ({ message, context, say }) => {
+  const diceCount = parseInt(context.matches[1], 10)
+  const maxNumber = parseInt(context.matches[2], 10)
+
+  const result = rollDice(diceCount, maxNumber)
+  if (result) {
+    say(generateSayArgument(message, result))
+  }
 }

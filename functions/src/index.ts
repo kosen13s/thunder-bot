@@ -1,13 +1,10 @@
 import * as functions from 'firebase-functions'
 import { App, ExpressReceiver, directMention } from '@slack/bolt'
-import { rollDice } from './controller/dice-controller'
-import {
-  stopDaisougen,
-  startDaisougen,
-} from './controller/daisougen-controller'
-import { generateSayArgument } from './wrapper/bolt'
-import { saveThunderKvs, loadThunderKvs } from './controller/kvs-controller'
-import { takeGyotaku } from './controller/gyotaku-controller'
+import { dice } from './controller/dice'
+import { stopDaisougen, startDaisougen } from './controller/daisougen'
+import { saveThunderKvs, loadThunderKvs } from './controller/kvs'
+import { takeGyotaku } from './controller/gyotaku'
+import { ping } from './controller/ping'
 
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
@@ -30,18 +27,8 @@ const app = new App({
 })
 
 app.error(console.log)
-app.message(/\b(\d+)D(\d+)\b/i, ({ context, message, say }) => {
-  const diceCount = parseInt(context.matches[1], 10)
-  const maxNumber = parseInt(context.matches[2], 10)
-
-  const result = rollDice(diceCount, maxNumber)
-  if (result) {
-    say(generateSayArgument(message, result))
-  }
-})
-app.message(/\bping\b/i, directMention(), ({ message, say }) => {
-  say(generateSayArgument(message, 'pong'))
-})
+app.message(/\b(\d+)D(\d+)\b/i, dice)
+app.message(/\bping\b/i, directMention(), ping)
 
 app.message(/^大草原スロット$/, startDaisougen(app.client))
 app.event('reaction_added', stopDaisougen(app.client, config.slack.user.token))
