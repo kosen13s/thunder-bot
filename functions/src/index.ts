@@ -5,6 +5,7 @@ import { stopDaisougen, startDaisougen } from './controller/daisougen'
 import { saveThunderKvs, loadThunderKvs } from './controller/kvs'
 import { takeGyotaku } from './controller/gyotaku'
 import { ping } from './controller/ping'
+import { postAsAnonymous } from './controller/anonymous'
 
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
@@ -40,5 +41,7 @@ app.action(
   { callback_id: 'gyotaku' },
   takeGyotaku(app.client, config.slack.gyotaku.channel)
 )
+
+app.command('/anonymous', postAsAnonymous)
 
 export const thunder = functions.https.onRequest(expressReceiver.app)
