@@ -42,6 +42,6 @@ app.action(
   takeGyotaku(app.client, config.slack.gyotaku.channel)
 )
 
-app.command('/anonymous', postAsAnonymous)
+app.command('/anonymous', postAsAnonymous(app.client, config.slack.user.token))
 
 export const thunder = functions.https.onRequest(expressReceiver.app)
