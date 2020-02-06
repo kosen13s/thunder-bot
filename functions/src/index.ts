@@ -30,7 +30,10 @@ app.error(console.log)
 app.message(/\b(\d+)D(\d+)\b/i, dice)
 app.message(/\bping\b/i, directMention(), ping)
 
-app.message(/^大草原スロット$/, startDaisougen(app.client))
+app.message(
+  /^大草原スロット$/,
+  startDaisougen(app.client, config.slack.user.token)
+)
 app.event('reaction_added', stopDaisougen(app.client, config.slack.user.token))
 
 app.command('/save-thunder-kvs', saveThunderKvs)

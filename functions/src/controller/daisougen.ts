@@ -53,10 +53,13 @@ const fetchMessage = async (
   }
 }
 
-export const startDaisougen = (client: WebClient): MessageHandler => {
+export const startDaisougen = (
+  client: WebClient,
+  userToken: string
+): MessageHandler => {
   return async ({ message, context }) => {
     const result: { [key: string]: unknown } = await client.chat.postMessage({
-      token: context.botToken,
+      token: userToken,
       channel: message.channel,
       thread_ts: message.thread_ts,
       text: `:${daisougenEmoji(1)}::${daisougenEmoji(2)}::${daisougenEmoji(
