@@ -86,7 +86,7 @@ export const stopDaisougen = (
   client: WebClient,
   userToken: string
 ): ReactionHandler => {
-  return async ({ event, context }) => {
+  return async ({ event }) => {
     console.log('reaction', event)
 
     const match = event.reaction.match(/^push-([123])$/)
@@ -125,7 +125,7 @@ export const stopDaisougen = (
     console.log('new text', newText)
 
     const updated = await client.chat.update({
-      token: context.botToken,
+      token: userToken,
       channel: item.channel,
       ts: item.ts,
       text: newText,
@@ -140,7 +140,7 @@ export const stopDaisougen = (
       console.log('new text', grasses)
 
       const updated = await client.chat.update({
-        token: context.botToken,
+        token: userToken,
         channel: item.channel,
         ts: item.ts,
         text: grasses,
