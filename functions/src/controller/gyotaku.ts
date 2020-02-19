@@ -25,10 +25,7 @@ ${threeBackQuotes}
 `
 }
 
-export const takeGyotaku = (
-  client: WebClient,
-  notifyTo: string
-): ActionHandler<MessageAction> => {
+export const takeGyotaku = (notifyTo: string): ActionHandler<MessageAction> => {
   return async ({ ack, body, context }) => {
     ack()
     if (body.type !== 'message_action') {
@@ -40,6 +37,7 @@ export const takeGyotaku = (
       ...body.message,
     })
 
+    const client = new WebClient(context.token)
     const postResult = await client.chat.postMessage({
       token: context.botToken,
       channel: notifyTo,
