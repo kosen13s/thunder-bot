@@ -53,11 +53,9 @@ const fetchMessage = async (
   }
 }
 
-export const startDaisougen = (
-  client: WebClient,
-  userToken: string
-): MessageHandler => {
+export const startDaisougen = (userToken: string): MessageHandler => {
   return async ({ message, context }) => {
+    const client = new WebClient(context.token)
     const result: { [key: string]: unknown } = await client.chat.postMessage({
       token: userToken,
       channel: message.channel,
@@ -82,11 +80,8 @@ export const startDaisougen = (
   }
 }
 
-export const stopDaisougen = (
-  client: WebClient,
-  userToken: string
-): ReactionHandler => {
-  return async ({ event }) => {
+export const stopDaisougen = (userToken: string): ReactionHandler => {
+  return async ({ event, context }) => {
     console.log('reaction', event)
 
     const match = event.reaction.match(/^push-([123])$/)
@@ -98,6 +93,7 @@ export const stopDaisougen = (
 
     console.log('reaction match', match)
 
+    const client = new WebClient(context.token)
     const message = await fetchMessage(client, userToken, item.channel, item.ts)
     console.log('history', message)
 
